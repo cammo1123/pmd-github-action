@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import {File, PMDReport} from './pmd'
-import parser from 'fast-xml-parser'
+import {XMLParser} from 'fast-xml-parser'
 import fs from 'fs'
 import BufferEncoding from 'buffer'
 import * as path from 'path'
@@ -33,6 +33,7 @@ function getWarningLevel(arg: string | number): AnnotationLevel {
 export function annotationsForPath(resultFile: string): Annotation[] {
   core.info(`Creating annotations for ${resultFile}`)
   const root: string = process.env['GITHUB_WORKSPACE'] || ''
+  const parser: XMLParser = new XMLParser(XML_PARSE_OPTIONS)
 
   const result: PMDReport = parser.parse(
     fs.readFileSync(resultFile, 'UTF-8' as BufferEncoding),
